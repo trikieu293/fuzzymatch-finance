@@ -1,0 +1,20 @@
+{
+  "title": "fuzzymatch-finance: Deterministic & Probabilistic Chart-of-Accounts Mapping",
+  "version": "1.0.0",
+  "upload_type": "software",
+  "description": "Financial domain extension for rule-first accounting mapping, thin-evidence guardrails, synonym lexicon integration, and human-in-the-loop audit logs.",
+  "creators": [
+    {
+      "name": "Kieu, Tri"
+    }
+  ],
+  "access_right": "open",
+  "license": "MIT",
+  "keywords": [
+    "finance",
+    "FP&A",
+    "chart of accounts",
+    "accounting reconciliation",
+    "audit trail"
+  ]
+}

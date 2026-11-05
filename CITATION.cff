@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this software in your research, please cite it using these metadata."
+title: "fuzzymatch-finance: Deterministic & Probabilistic Chart-of-Accounts Mapping"
+version: 1.0.0
+date-released: 2026-11-05
+authors:
+  - family-names: "Kieu"
+    given-names: "Tri"
+    email: "trikieu293@gmail.com"
+license: MIT
+repository-code: "https://github.com/trikieu293/fuzzymatch-finance"
+keywords:
+  - "finance"
+  - "FP&A"
+  - "chart of accounts"
+  - "entity resolution"
+  - "accounting reconciliation"
+references:
+  - type: software
+    title: "fuzzymatch: Industrial-scale Text Fuzzy Mapping and Entity Resolution"
+    version: 1.0.0

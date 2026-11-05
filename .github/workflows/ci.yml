@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: fuzzymatch-finance
+      - uses: actions/checkout@v4
+        with:
+          repository: trikieu293/fuzzymatch
+          ref: master
+          path: fuzzymatch
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -e "./fuzzymatch" -e "./fuzzymatch-finance[dev]"
+      - working-directory: fuzzymatch-finance
+        run: ruff check src tests
+
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: fuzzymatch-finance
+      - uses: actions/checkout@v4
+        with:
+          repository: trikieu293/fuzzymatch
+          ref: master
+          path: fuzzymatch
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -e "./fuzzymatch" -e "./fuzzymatch-finance[dev]"
+      - working-directory: fuzzymatch-finance
+        run: mypy
+
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: fuzzymatch-finance
+      - uses: actions/checkout@v4
+        with:
+          repository: trikieu293/fuzzymatch
+          ref: master
+          path: fuzzymatch
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -e "./fuzzymatch" -e "./fuzzymatch-finance[dev]"
+      - working-directory: fuzzymatch-finance
+        run: pytest tests/unit tests/adversarial tests/e2e --cov=src/fuzzymatch_finance --cov-report=term-missing --cov-fail-under=95
+
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: fuzzymatch-finance
+      - uses: actions/checkout@v4
+        with:
+          repository: trikieu293/fuzzymatch
+          ref: master
+          path: fuzzymatch
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -e "./fuzzymatch" -e "./fuzzymatch-finance[dev]"
+      - working-directory: fuzzymatch-finance
+        run: python -m build
+      - working-directory: fuzzymatch-finance
+        run: twine check --strict dist/*
+

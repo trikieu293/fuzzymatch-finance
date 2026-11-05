@@ -1,0 +1,89 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fuzzymatch-finance"
+description = "Finance and FP&A workflow package built on fuzzymatch"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{ name = "Tri Kieu", email = "trikieu293@gmail.com" }]
+maintainers = [{ name = "Tri Kieu", email = "trikieu293@gmail.com" }]
+keywords = ["finance", "fpa", "chart-of-accounts", "fuzzy-matching", "record-linkage"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Office/Business :: Financial :: Accounting",
+    "Typing :: Typed",
+]
+dependencies = [
+    "fuzzymatch>=1.0.0,<2.0.0",
+    "pandas>=2.0",
+    "openpyxl>=3.1",
+]
+dynamic = ["version"]
+
+[project.scripts]
+fuzzymatch-finance = "fuzzymatch_finance.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/trikieu293/fuzzymatch-finance"
+Repository = "https://github.com/trikieu293/fuzzymatch-finance"
+Issues = "https://github.com/trikieu293/fuzzymatch-finance/issues"
+Changelog = "https://github.com/trikieu293/fuzzymatch-finance/blob/master/CHANGELOG.md"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "mypy>=1.0",
+    "pandas-stubs>=2.0",
+    "ruff>=0.16",
+    "build>=1.0",
+    "twine>=5.0",
+    "hypothesis>=6.0",
+    "pyyaml>=6.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+fuzzymatch_finance = ["py.typed"]
+
+[tool.setuptools.dynamic]
+version = {attr = "fuzzymatch_finance.__version__"}
+
+[tool.mypy]
+strict = true
+files = ["src/fuzzymatch_finance"]
+mypy_path = "../fuzzymatch"
+
+[[tool.mypy.overrides]]
+module = "fuzzymatch.*"
+# Consume core's types but let the core repo gate its own internals.
+follow_imports = "silent"
+
+[[tool.mypy.overrides]]
+module = "openpyxl.*"
+ignore_missing_imports = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.coverage.run]
+source = ["src/fuzzymatch_finance"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 95
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
